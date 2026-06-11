@@ -1,0 +1,381 @@
+/* ==========================================================================
+   DESIGN SYSTEM & VARIABLES
+   ========================================================================== */
+:root {
+    --font-heading: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* Color Palette */
+    --color-bg-light: #ffffff;
+    --color-text-dark: #121212;
+    --color-btn-gray: #e2e8f0;
+    --color-btn-gray-hover: #cbd5e1;
+    --color-yellow-glow: #ffea00;
+    
+    /* Transitions & Shadows */
+    --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-page: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+    --shadow-premium: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --shadow-polaroid: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+/* Reset Defaults */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font-body);
+    background-color: var(--color-bg-light);
+    color: var(--color-text-dark);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   APP CONTAINER & PAGES LAYOUT
+   ========================================================================== */
+.app-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: var(--transition-page);
+    z-index: 1;
+}
+
+/* Page states for transition */
+.page.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.08) translateY(10px);
+    z-index: 0;
+}
+
+.page.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: scale(1) translateY(0);
+    z-index: 2;
+}
+
+/* ==========================================================================
+   PAGE 1: QUESTION DESIGN
+   ========================================================================== */
+#page-1 {
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+.card-content {
+    text-align: center;
+    max-width: 650px;
+    width: 100%;
+}
+
+.heading-page1 {
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-text-dark);
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.02em;
+    padding: 0 10px;
+}
+
+.button-group {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    min-height: 60px; /* reserve space to prevent shifting */
+    width: 100%;
+}
+
+/* Buttons */
+.btn {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    outline: none;
+    user-select: none;
+}
+
+.btn-secondary {
+    background-color: var(--color-btn-gray);
+    color: #475569;
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-btn-gray-hover);
+    color: #1e293b;
+}
+
+.btn-primary {
+    background-color: var(--color-btn-gray);
+    color: #475569;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.btn-primary:hover {
+    background-color: #d1d5db;
+    color: #111827;
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Escaping Button Positioning */
+#btn-no.evading {
+    position: fixed;
+    z-index: 999;
+    transition: left 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================================================
+   PAGE 2: GALLERY & SUNSET MESSAGE DESIGN
+   ========================================================================== */
+#page-2 {
+    background-image: url('images/bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+/* Gradient Overlay for Readability */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.25) 0%,
+        rgba(0, 0, 0, 0.3) 30%,
+        rgba(0, 0, 0, 0.5) 70%,
+        rgba(0, 0, 0, 0.75) 100%
+    );
+    z-index: 1;
+}
+
+.gallery-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 60px 0 20px 0;
+    z-index: 2;
+}
+
+/* ==========================================================================
+   INFINITE PHOTO MARQUEE SLIDER
+   ========================================================================== */
+.slider-wrapper {
+    width: 100%;
+    overflow: hidden;
+    padding: 30px 0;
+    display: flex;
+    align-items: center;
+}
+
+.slider-track {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    animation: marquee 25s linear infinite;
+    padding: 0 15px;
+}
+
+/* Pause scroll when hovered for premium interaction */
+.slider-track:hover {
+    animation-play-state: paused;
+}
+
+/* Polaroid Photo Card styling */
+.slide {
+    flex-shrink: 0;
+    width: 220px;
+    background: #ffffff;
+    padding: 12px 12px 28px 12px;
+    border-radius: 4px;
+    box-shadow: var(--shadow-polaroid);
+    transition: var(--transition-smooth);
+    cursor: pointer;
+}
+
+/* Random rotations for aesthetic polaroid scatter look */
+.slide:nth-child(4n+1) { transform: rotate(-2deg) translateY(5px); }
+.slide:nth-child(4n+2) { transform: rotate(3deg) translateY(-5px); }
+.slide:nth-child(4n+3) { transform: rotate(-1.5deg) translateY(-3px); }
+.slide:nth-child(4n+4) { transform: rotate(2.5deg) translateY(4px); }
+
+.slide:hover {
+    transform: scale(1.08) rotate(0deg) translateY(-15px) !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+    z-index: 10;
+}
+
+.slide img {
+    width: 100%;
+    height: 196px;
+    object-fit: cover;
+    border-radius: 2px;
+    background-color: #eaeaea; /* Fallback gray */
+}
+
+/* Scroll Animation Keyframes */
+@keyframes marquee {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        /* Move by half because JavaScript duplicates the cards list */
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
+/* ==========================================================================
+   TEXT MESSAGES
+   ========================================================================== */
+.message-box {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 24px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px; /* Menggeser posisi teks sedikit ke atas */
+}
+
+.text-sub {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--color-yellow-glow);
+    text-shadow: 0 2px 10px rgba(255, 234, 0, 0.35);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+}
+
+.text-main {
+    font-family: var(--font-heading);
+    font-size: 3.8rem;
+    font-weight: 800;
+    color: var(--color-yellow-glow);
+    text-shadow: 0 2px 15px rgba(255, 234, 0, 0.4);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+/* ==========================================================================
+   AUDIO CONTROLLER (EXTRA PREMIUM TOUCH)
+   ========================================================================== */
+.audio-control {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    z-index: 5;
+    transition: var(--transition-smooth);
+    user-select: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.audio-control:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+}
+
+.audio-control svg {
+    width: 18px;
+    height: 18px;
+}
+
+.audio-label {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   RESPONSIVENESS (MOBILE FRIENDLY)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .heading-page1 {
+        font-size: 1.75rem;
+        margin-bottom: 2rem;
+    }
+    
+    .btn {
+        padding: 12px 24px;
+        font-size: 0.95rem;
+    }
+
+    .slide {
+        width: 170px;
+        padding: 8px 8px 20px 8px;
+    }
+    
+    .slide img {
+        height: 150px;
+    }
+
+    .text-sub {
+        font-size: 1.5rem;
+    }
+
+    .text-main {
+        font-size: 2.2rem;
+    }
+
+    .audio-control {
+        bottom: 15px;
+        right: 15px;
+        padding: 8px 14px;
+    }
+}
